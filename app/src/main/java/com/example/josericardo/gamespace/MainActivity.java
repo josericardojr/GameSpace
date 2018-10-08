@@ -18,7 +18,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void startGame(View view){
         Intent intent = new Intent(MainActivity.this,
-                GameView.class);
+                GameActivity.class);
         startActivity(intent);
     }
 }

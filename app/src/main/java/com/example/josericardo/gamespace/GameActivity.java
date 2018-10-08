@@ -1,8 +1,10 @@
 package com.example.josericardo.gamespace;
 
+import android.graphics.Point;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Display;
 
 public class GameActivity extends AppCompatActivity {
 
@@ -12,7 +14,11 @@ public class GameActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        gameView = new GameView(this);
+        Display display = getWindowManager().getDefaultDisplay();
+        Point p = new Point();
+        display.getSize(p);
+
+        gameView = new GameView(this, p.x, p.y);
 
         setContentView(gameView);
     }
