@@ -4,6 +4,8 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Point;
+import android.graphics.Rect;
 
 import java.util.Random;
 
@@ -14,6 +16,7 @@ public class Enemy {
 
     private int max_x;
     private int max_y;
+    private Rect collisionRect = new Rect();
 
     private int speed = 0;
 
@@ -25,8 +28,6 @@ public class Enemy {
 
 
     public Enemy(Context context, int sw, int sh){
-
-
 
 
         bitmap = BitmapFactory.decodeResource(context.getResources(),
@@ -49,11 +50,13 @@ public class Enemy {
         x -= speed;
 
         if (x < -bitmap.getWidth()){
-            Random generator = new Random();
-            speed = generator.nextInt(10) + 10;
-            x = max_x;
-            y = generator.nextInt(max_y);
+            respawn();
         }
+
+        collisionRect.left = x;
+        collisionRect.top = y;
+        collisionRect.right = x + bitmap.getWidth();
+        collisionRect.bottom = y + bitmap.getHeight();
     }
 
     public void draw(Canvas canvas){
@@ -62,5 +65,18 @@ public class Enemy {
 
     public int getSpeed(){
         return speed;
+    }
+
+    public Rect getCollisionRect(){ return collisionRect; }
+
+    public void respawn(){
+        Random generator = new Random();
+        speed = generator.nextInt(10) + 10;
+        x = max_x;
+        y = generator.nextInt(max_y);
+    }
+
+    public Point getPosition(){
+        return new Point(x, y);
     }
 }

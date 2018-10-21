@@ -19,6 +19,7 @@ public class GameView extends SurfaceView
     boolean isPlaying;
     private int screen_width, screen_height;
     private ArrayList<Star> stars = new ArrayList<>();
+    private ArrayList<Explosion> explosions = new ArrayList<>();
     private Enemy[] enemies;
 
     // Game Thread
@@ -88,10 +89,23 @@ public class GameView extends SurfaceView
             s.update(player.getSpeed());
         }
 
-        for (int i = 0; i < enemies.length; i++)
+        player.update();
+
+        for (int i = 0; i < enemies.length; i++) {
             enemies[i].update(player.getSpeed());
 
-        player.update();
+            if (player.getCollisionRect().intersect(
+                    enemies[i].getCollisionRect())){
+                Explosion exp = new Explosion(getContext(),
+                        enemies[i].getPosition());
+                explosions.add(exp);
+                enemies[i].respawn();
+            }
+        }
+
+
+
+
 
     }
 
@@ -108,6 +122,11 @@ public class GameView extends SurfaceView
 
         for (int i = 0; i < enemies.length; i++)
             enemies[i].draw(canvas);
+
+        for (Explosion e : explosions){
+            e.draw(canvas);
+        }
+        explosions.clear();
 
         player.draw(canvas);
         surfaceHolder.unlockCanvasAndPost(canvas);

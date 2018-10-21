@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Rect;
 
 public class Player {
 
@@ -21,6 +22,8 @@ public class Player {
     private final int GRAVITY = -10;
     private final int MIN_SPEED = 1;
     private final int MAX_SPEED = 20;
+
+    private Rect collisionRect = new Rect();
 
 
     public Player(Context context, int sw, int sh){
@@ -56,6 +59,11 @@ public class Player {
 
         if (y + bitmap.getHeight() > max_y) y = max_y - bitmap.getHeight();
 
+        collisionRect.left = x;
+        collisionRect.top = y;
+        collisionRect.right = x + bitmap.getWidth();
+        collisionRect.bottom = y + bitmap.getHeight();
+
     }
 
     public void draw(Canvas canvas){
@@ -72,5 +80,9 @@ public class Player {
 
     public int getSpeed(){
         return speed;
+    }
+
+    public Rect getCollisionRect() {
+        return collisionRect;
     }
 }
